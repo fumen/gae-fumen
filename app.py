@@ -177,4 +177,4 @@ def get_album_info():
 
 if __name__ == '__main__':
     app.secret_key = 'someSecret'
-    app.run(debug=True, threaded=True)
+    app.run(port=8080,debug=True, threaded=True)
