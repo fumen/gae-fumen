@@ -174,7 +174,7 @@ def get_album_info():
     else:
         return jsonify({'success': True, 'album_data': data})
 
-
-if __name__ == '__main__':
-    app.secret_key = 'someSecret'
-    app.run(port=8080,debug=True, threaded=True)
+# Check without this on GAE
+# if __name__ == '__main__':
+#     app.secret_key = 'someSecret'
+#     app.run(port=8080,debug=True, threaded=True)
