@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./../static/JS/jquery-ui.min.css" />
+    <link rel="stylesheet" href="./../static/JS/jquery-ui.structure.min.css" />
+    <link rel="stylesheet" href="./../static/CSS/materialize.css" />
+    <link rel="stylesheet" href="./../static/CSS/slick.css" />
+    <link rel="stylesheet" href="./../static/CSS/slick-theme.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./../static/Images/Fu.png" />
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="./../static/CSS/main.css">
+    <script src="./../static/JS/jquery-3.1.1.js"></script>
+    <script src="./../static/JS/materialize.min.js"></script>
+    <script src="./../static/JS/slick.min.js"></script>
+    <script src="./../static/JS/jquery-ui.min.js"></script>
+    <script src="./../static/JS/underscore-min.js"></script>
+    <script src="./../static/JS/knockout-3.4.2.js"></script>
+    <title>Fumen</title>
+</head>
+
+<body>
+
+    <!-- Start of Alert Modal -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content center" id="alertModalContent"></div>
+    </div>
+    <!-- End of Alert Modal -->
+
+    <!--<h1><a href="">Download</a></h1>-->
+
+    <div class="add-margin">
+        <!-- Start of main top nav -->
+        <nav class="transparent" style="box-shadow: none">
+            <div class="nav-wrapper">
+                <div class="row">
+                    <div class="col s3 m2 l2 center">
+                        <a href="#" data-activates="slide-out" class="brand-logo black-text left hide-on-size" style="display: block; margin-left: 10px; font-family: 'Great Vibes', cursive; font-weight: bolder">FU</a>
+                        <!--<a class="black-text left show-on-size" style="font-size: 2.1rem; display: none; margin-left: 10px; font-family: 'Great Vibes', cursive; font-weight: bolder">FU</a>-->
+                    </div>
+                    <div class="col s8 m8 l8 center">
+                        <div id="searchForm" class="z-depth-1">
+                            <div class="input-field" class="transparent">
+                                <input id="searchInput" type="search" class="transparent">
+                                <label class="label-icon" for="searchInput" id="submitBtn" style="cursor: pointer"><i class="material-icons black-text">search</i></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Start of User Dropdown -->
+                    <div class="col m2 l2 center hide-on-med-and-down" data-bind="if: currentUser">
+                        <a href="#" class="dropdown-button btn grad-color base-style" data-activates="userDropdown" style="font-weight: bold">User</a>
+                        <ul id='userDropdown' class='dropdown-content grad-color'>
+                            <li><a href="#!" class="white-text base-style">one</a></li>
+                            <li><a href="#!" class="white-text base-style">two</a></li>
+                            <li><a href="#!" class="white-text base-style">three</a></li>
+                        </ul>
+                    </div>
+                    <div class="col m2 l2 center hide-on-med-and-down" data-bind="ifnot: currentUser">
+                        <a href="#" class="btn grad-color base-style" style="font-weight: bold">SignUp</a>
+                    </div>
+                    <!-- End of User Dropdown -->
+
+                </div>
+            </div>
+        </nav>
+        <!-- End of main top nav -->
+    </div>
+
+    <!-- Start of side nav -->
+    <div id="slide-out" class="side-nav fixed grad-color">
+        <div class="center"><a href="#" class="black-text show-on-size" style="display: none; font-family: 'Great Vibes', cursive; font-weight: bolder; font-size: 3em">FU</a></div>
+        <br />
+        <ul>
+            <li><a href="#!" class="white-text center base-style" style="font-size: 1.5em">What's New</a></li>
+            <li data-bind="if: currentUser"><a href="#!" class="white-text center base-style" style="font-size: 1.5em">Playlists</a></li>
+            <li data-bind="if: currentUser"><a href="#!" class="white-text center base-style" style="font-size: 1.5em">Library</a></li>
+            <li><a href="#!" class="white-text center base-style" style="font-size: 1.5em">Discover</a></li>
+        </ul>
+    </div>
+    <!-- End of side nav -->
+
+    <!-- Start of Main Homepage -->
+    <div class="add-margin">
+        <!-- Start of Main Recomendation Part -->
+        <div class="container" data-bind="ifnot: currentPageArtistAlbum">
+            <!-- Start of Trending Artists -->
+            <div>
+                <div class="white-text base-style">
+                    <h4>
+                        Trending Tracks:
+                    </h4>
+                </div>
+
+                <div class="flowy_trending" data-bind="foreach: topTrendingTracks">
+                    <div class="fixed-width">
+                        <div class="card">
+                            <div class="card-image image-container" data-bind="click: $root.playSong">
+                                <img data-bind="attr: {src: image}" />
+                                <div class="overlay">
+                                    <i class="material-icons">play_circle_filled</i>
+                                </div>
+                                <div class="card-title">
+                                    <h5 data-bind="text: trackName"></h5>
+                                    <h6 data-bind="text: artistName"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End of Trending Artists -->
+
+            <!-- Start of Top Artists -->
+            <div style="padding-top: 50px">
+                <div class="white-text base-style">
+                    <h4>
+                        Top Artists:
+                    </h4>
+                </div>
+                <div class="row" data-bind="foreach: topArtists">
+                    <div class="col s12 m4">
+                        <div class="card transparent white-text">
+                            <div class="card-image" data-bind="click: $root.getArtistInfo.bind(artistName)" style="cursor: pointer">
+                                <img data-bind="attr: {src: image}">
+                                <span data-bind="text: artistName" class="base-style card-title"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top Artists -->
+
+            <!-- Start of Top Emerging Artists -->
+            <div style="padding-top: 14px;">
+                <div class="white-text base-style">
+                    <h4>
+                        Top Emerging Tracks:
+                    </h4>
+                </div>
+
+                <div class="flowy_emerging" data-bind="foreach: topEmergingTracks">
+                    <div class="fixed-width">
+                        <div class="card">
+                            <div class="card-image image-container" data-bind="click: $root.playSong">
+                                <img data-bind="attr: {src: image}" />
+                                <div class="overlay">
+                                    <i class="material-icons">play_circle_filled</i>
+                                </div>
+                                <div class="card-title">
+                                    <h5 data-bind="text: trackName"></h5>
+                                    <h6 data-bind="text: artistName"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End of Top Emerging Artists -->
+
+            <!-- Start of Top Albums -->
+            <div style="padding-top: 50px">
+                <div class="white-text base-style">
+                    <h4>
+                        Top Albums:
+                    </h4>
+                </div>
+                <div class="row" data-bind="foreach: topAlbums">
+                    <div class="col s12 m4">
+                        <div class="card transparent white-text">
+                            <div class="card-image" data-bind="click: $root.getAlbumInfo" style="cursor: pointer">
+                                <img data-bind="attr: {src: image}">
+                                <div class="card-title">
+                                    <h5 data-bind="text: albumName"></h5>
+                                    <h6 data-bind="text: artistName"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Top Albums -->
+        </div>
+        <!-- End of Main Recomendation Part -->
+
+        <!-- Start of page for displaying full page artist and album info -->
+        <div class="container" data-bind="with: currentPageArtistAlbum" style="padding: 0; margin-bottom: 150px">
+            <h3 data-bind="text: albumName ? artistName + ' - ' + albumName : artistName" class="base-style white-text"></h3>
+            <div class="row">
+                <div class="col s12 m6 l6 center">
+                    <img alt="Artist Image" data-bind="attr: {src: image}" class="z-depth-5" />
+                </div>
+                <div data-bind="html: summary" class="col s12 m6 l6 white-text base-style center" style="font-size: 1.1em"></div>
+            </div>
+
+            <div>
+                <div class="white-text base-style">
+                    <h4 data-bind="text: albumName ? 'Top Tracks' : 'Similar Artists'"></h4>
+                </div>
+
+                <div class="flowy" data-bind="foreach: tracks">
+                    <div class="fixed-width">
+                        <div class="card">
+                            <div class="card-image image-container" data-bind="click: $root.playSong.bind($data, $parent.artistName)">
+                                <img data-bind="attr: {src: $parent.image}" />
+                                <div class="overlay">
+                                    <i class="material-icons">play_circle_filled</i>
+                                </div>
+                                <div class="card-title">
+                                    <h5 data-bind="text: $data"></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flowy" data-bind="foreach: similarArtists">
+                    <div class="fixed-width">
+                        <div class="card" style="cursor: pointer">
+                            <div class="card-image" data-bind="click: $root.getArtistInfo.bind($data)">
+                                <img data-bind="attr: {src: image}" />
+                                <div class="card-title">
+                                    <h5 data-bind="text: artist_name"></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End of page for displaying full page artist and album info -->
+
+        <!-- Start of Media Player -->
+        <div id="playerHolder">
+            <audio id="audioElement"></audio>
+            <div class="row base-style white-text show-on-small hide-on-med-and-up" style="font-weight: bolder; font-size: 20px; text-align: center">
+                <div class="col s2 currentTime">
+                    00:00
+                </div>
+                <div class="col s8 range-field">
+                    <input type="range" class="seekSlider" value="0" />
+                </div>
+                <div class="col s2 leftTime">
+                    00:00
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col m2 l1 hide-on-small-only">
+                    <img src="./../static/Images/TS.png" alt="Track Image" style="max-width: 100%" id="songImage">
+                </div>
+
+                <div class="col m3 l3 base-style white-text hide-on-small-only songName" style="font-weight: bolder; font-size: 20px;">
+                    Taylor Swift
+                    <br /> WonderLand
+                </div>
+
+                <div class="col s12 m7 l8">
+
+                    <div class="row">
+                        <!-- Start of player controls -->
+                        <div class="row base-style white-text contol-buttons" style="font-weight: bolder; font-size: 20px">
+                            <div class="col s2 m2 l2">
+                                <i class="material-icons" id="rndBtn">shuffle</i>
+                            </div>
+                            <div class="col s8 m8 l8" style="text-align: center">
+                                <i class="material-icons" id="backward">fast_rewind</i>
+                                <i class="material-icons" id="PPBtn">pause</i>
+                                <i class="material-icons" id="forward">fast_forward</i>
+                            </div>
+                            <div class="col s2 m2 l2">
+                                <i class="material-icons" id="shlfBtn">repeat</i>
+                            </div>
+                        </div>
+                        <!-- End of player controls -->
+                    </div>
+
+                    <!-- Start of timer and scrobbler -->
+                    <div class="row base-style hide-on-small-only white-text" style="font-weight: bolder; font-size: 20px; text-align: center">
+                        <div class="col m2 l2 currentTime">
+                            00:00
+                        </div>
+                        <div class="col m8 l8 range-field">
+                            <input type="range" class="seekSlider" value="0" />
+                        </div>
+                        <div class="col m2 l2 leftTime">
+                            00:00
+                        </div>
+                    </div>
+                    <!-- End of timer and scrobbler -->
+
+                    <div class="row base-style show-on-small hide-on-med-and-up white-text songName" style="font-weight: bolder; font-size: 20px; text-align: center">
+                        Taylor Swift
+                        <br /> WonderLand
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Media Player -->
+    </div>
+    <!-- End of Main Homepage -->
+
+
+    <script>
+        $('.modal').modal();
+        $(".brand-logo.left").sideNav({
+            draggable: true
+        });
+        $('.dropdown-button').dropdown({
+            hover: true,
+            belowOrigin: true
+        });
+    </script>
+
+    <script>
+        var searchInput = document.getElementById('searchInput');
+        var searchForm = document.getElementById('searchForm');
+        searchInput.addEventListener('focus', function () {
+            searchForm.className = "z-depth-5";
+        });
+        searchInput.addEventListener('blur', function () {
+            searchForm.className = "z-depth-1";
+        });
+    </script>
+
+    <script src="./../static/javascripts/Script.js"></script>
+    <script src="./../static/javascripts/Uitlities.js"></script>
+    <script src="./../static/javascripts/Models.js"></script>
+    <script src="./../static/javascripts/MainController.js"></script>
+</body>
+
+</html>
