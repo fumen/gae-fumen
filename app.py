@@ -4,10 +4,11 @@ from youtube_list import youtube_search
 from cover_art_getter import itunes_album_art, last_fm_cover_art
 import LastFM_Top
 import top_chart
+import config
 
 pafy.set_api_key('AIzaSyCsrKjMf7_mHYrT6rIJ-oaA6KL5IYg389A')
 app = Flask(__name__)
-
+app.config.from_object('config')
 
 @app.route('/')
 def index():
@@ -174,6 +175,7 @@ def get_album_info():
     else:
         return jsonify({'success': True, 'album_data': data})
 
+# Stack Overflow fix for GAE using config.py for port and host
 if __name__ == '__main__':
      app.secret_key = 'someSecret'
-     app.run(host="localhost" ,port=8080,debug=True, threaded=True)
+     app.run(host=config.HOST ,port=config.PORT)
