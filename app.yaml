@@ -1,8 +1,7 @@
 # Config file for Google APp Engine
-
-application: Fumen
+entrypoint: python app.py
 version: 1
-runtime: python27
+runtime: python
 api_version: 1
 threadsafe: yes
 
@@ -15,5 +14,7 @@ libraries:
   version: latest
     
 handlers:
-- url: .*
+- url: /.*
   script: app.py
+- url: /static
+  static_dir: static
